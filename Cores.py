@@ -16,9 +16,6 @@ print(f'\n{color.BOLD}{color.RED}\nA tabuada de {n} é: {color.END}\n')
 print('*' * 15)
 
 for i in range(10):
-    if i < 9:
-        print(f'{color.YELLOW}{n}  x   {i + 1}  =  {n * (i+1)}{color.END}')
-    else:
-        print(f'{color.YELLOW}{n}  x  {i + 1}  =  {n * (i+1)}{color.END}')
+   print(f'{color.YELLOW}{n}  x   {i + 1}  =  {n * (i+1)}{color.END}')
 
 print('*' * 15)
