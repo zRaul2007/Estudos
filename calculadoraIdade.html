@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Calculadora de Idade</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif, cursive;
+            margin: 20px;
+            background-color: #f0f0f0;
+            /* Adicionei uma cor suave ao fundo */
+        }
+
+        h1 {
+            font-size: 2em;
+            text-align: center;
+        }
+
+        .principal {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+            /* Ajuste para separar do relógio */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            /* Organiza os itens um abaixo do outro */
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            /* Espaço entre os elementos */
+        }
+
+        .btn {
+            background-color: #4CAF50;
+            /* Verde */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        #horaAtual {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="horaAtual">Carregando horário...</div>
+
+    <div class="principal">
+        <h1>Calculadora de Idade</h1>
+        <h3>Digite sua data de nascimento:</h3>
+        <input type="date" id="dataNascimento">
+        <button class="btn" onclick="calcularIdade()">Calcular Idade</button>
+    </div>
+
+    <script>
+        // 3. Configuração do Luxon
+        // A biblioteca Luxon fica disponível na variável global 'luxon'
+        const DateTime = luxon.DateTime;
+
+        function exibirHoraAtual() {
+            // Pega a data e hora de agora
+            const agora = DateTime.now();
+
+            // Formata para uma string legível (ex: 14:30:25)
+            // TIME_WITH_SECONDS é um formato pré-definido do Luxon
+            const horaFormatada = agora.toLocaleString(DateTime.TIME_WITH_SECONDS);
+
+            // Injeta o texto na div
+            document.getElementById("horaAtual").textContent = "Horário: " + horaFormatada;
+        }
+
+        // Chama a função imediatamente ao carregar
+        exibirHoraAtual();
+
+        // Opcional: Atualiza o relógio a cada 1 segundo (1000 milissegundos)
+        setInterval(exibirHoraAtual, 1000);
+
+        // --- NOVA Função de Calcular Idade ---
+        function calcularIdade() {
+            // 1. Pegar o valor do input
+            const inputValor = document.getElementById('dataNascimento').value;
+
+            // Verificação básica se está vazio
+            if (!inputValor) {
+                alert("Por favor, selecione uma data!");
+                return;
+            }
+
+            // 2. Criar as datas com Luxon
+            // .fromISO transforma a string "2000-01-01" num objeto Luxon
+            const nascimento = DateTime.fromISO(inputValor);
+            const agora = DateTime.now();
+
+            // 3. A Mágica do Luxon: Calcular a Diferença
+            // Pedimos a diferença em 'years' (anos) e 'months' (meses)
+            const diferenca = agora.diff(nascimento, ['years', 'months']);
+
+            // 4. Extrair os valores do objeto de diferença
+            // O toObject() converte o resultado em algo como { years: 25, months: 3.5 }
+            const dados = diferenca.toObject();
+
+            // Math.floor arredonda os meses para baixo (para não mostrar "3.4 meses")
+            const anos = dados.years;
+            const meses = Math.floor(dados.months);
+
+            // 5. Exibir na tela
+            alert("Você tem " + anos + " anos e " + meses + " mes(es).");
+        }
+    </script>
+</body>
+
+</html>
